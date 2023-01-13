@@ -1,0 +1,15 @@
+version: '3.9'
+
+volumes:
+  db_data:
+    driver: local
+
+services:
+  api:
+    build: 
+      context: ./backend/AgendaNetApi
+      dockerfile: Dockerfile.development
+    container_name: agenda-net-api
+    restart: always
+    volumes:
+      - ./backend/AgendaNetApi:/src

@@ -5,14 +5,12 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["AgendaNet.Api/AgendaNet.Api.csproj", "AgendaNet.Api/"]
-RUN dotnet restore "AgendaNet.Api/AgendaNet.Api.csproj"
 COPY . .
-WORKDIR "/src/AgendaNet.Api"
-RUN dotnet build "AgendaNet.Api.csproj" -c Release -o /app/build
+RUN dotnet restore
+RUN dotnet build "AgendaNet.Api/AgendaNet.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "AgendaNet.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "AgendaNet.Api/AgendaNet.Api.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
