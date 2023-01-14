@@ -2,7 +2,6 @@ using AgendaNet.Domain.Commands;
 
 namespace AgendaNet.Tests.Commands
 {
-  [TestClass]
   public class CreateContactCommandTest
   {
     private readonly CreateContactCommand _invalidCommand = new CreateContactCommand("", "", "");
@@ -14,25 +13,25 @@ namespace AgendaNet.Tests.Commands
       _validCommand.Validate();
     }
 
-    [TestMethod]
+    [Fact]
     public void Should_Be_Valid()
     {
-      Assert.AreEqual(_validCommand.IsValid, true);
+      Assert.True(_validCommand.IsValid);
     }
 
-    [TestMethod]
+    [Fact]
     public void Should_Be_Invalid()
     {
-      Assert.AreEqual(_invalidCommand.IsValid, false);
+      Assert.False(_invalidCommand.IsValid);
     }
 
-    [TestMethod]
+    [Fact]
     public void Should_Be_Invalid_If_Email_Is_Not_A_Valid_Email()
     {
       var command = new CreateContactCommand("Test", "a", "81912341234");
       command.Validate();
-      Assert.IsNotNull(command.Notifications.FirstOrDefault(n => n.Key == "Email"));
-      Assert.AreEqual(command.IsValid, false);
+      Assert.NotNull(command.Notifications.FirstOrDefault(n => n.Key == "Email"));
+      Assert.False(command.IsValid);
     }
 
   }

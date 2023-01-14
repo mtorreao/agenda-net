@@ -20,3 +20,25 @@ Desenvolver um CRUD para uma agenda (nome, email e telefone) utilizando .NET 6 c
 - Dockerfile da aplicação
 
 O projeto em si é bem simples, porém pode ficar à vontade para incrementar da maneira que melhor mostre suas habilidades como desenvolvedor. Pode utilizar qualquer tipo de banco de dados.
+
+
+## Code Coverage
+
+### Backend
+**Instalação**
+```bash
+$ dotnet tool install -g dotnet-reportgenerator-globaltool
+```
+
+**Gerar nova cobertura**
+```bash
+$ cd backend/AgendaNetApi/AgendaNet.Tests && dotnet test --collect:"XPlat Code Coverage" && cd ../../../
+```
+
+**Gerar novo relatório em html**
+```bash
+$ reportgenerator \
+    -reports:"backend/AgendaNetApi/AgendaNet.Tests/TestResults/*/*.xml" \
+    -targetdir:"backend/AgendaNetApi/coveragereport" \
+    -reporttypes:Html
+```
