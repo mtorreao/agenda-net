@@ -17,7 +17,7 @@ public class ContactController : ControllerBase
   }
 
   [HttpPost]
-  public GenericCommandResult Create([FromBody] CreateContactCommand command, [FromServices] ContactHandler handler)
+  public GenericCommandResult Create([FromBody] CreateContactCommand command, [FromServices] IHandler<CreateContactCommand> handler)
   {
     return (GenericCommandResult)handler.Handle(command);
   }

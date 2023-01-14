@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgendaNet.Infra.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230114191123_AddContacts")]
-    partial class AddContacts
+    [Migration("20230114193158_AddContact")]
+    partial class AddContact
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

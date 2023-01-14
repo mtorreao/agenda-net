@@ -18,6 +18,8 @@ namespace AgendaNet.Infra
       modelBuilder.Entity<Contact>().Property(x => x.Name).HasMaxLength(100);
       modelBuilder.Entity<Contact>().Property(x => x.Email).HasMaxLength(100);
       modelBuilder.Entity<Contact>().Property(x => x.Phone).HasMaxLength(20);
+      modelBuilder.Entity<Contact>().Ignore(x => x.Notifications);
+      modelBuilder.Entity<Contact>().Ignore(x => x.IsValid);
     }
   }
 }

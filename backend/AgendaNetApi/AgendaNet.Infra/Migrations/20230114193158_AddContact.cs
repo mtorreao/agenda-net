@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgendaNet.Infra.Migrations
 {
-    public partial class AddContacts : Migration
+    public partial class AddContact : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
