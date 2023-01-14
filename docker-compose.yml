@@ -4,12 +4,51 @@ volumes:
   db_data:
     driver: local
 
+networks:
+  agenda-net:
+    driver: bridge
+
 services:
   api:
-    build: 
-      context: ./backend/AgendaNetApi
-      dockerfile: Dockerfile.development
+    build: ./backend/AgendaNetApi
     container_name: agenda-net-api
-    restart: always
+    ports:
+      - "5000:80"
+    depends_on:
+      - db
+    networks:
+      - agenda-net
+  
+  db:
+    image: mysql:5.7
+    container_name: agenda-net-db
     volumes:
-      - ./backend/AgendaNetApi:/src
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: agenda_net_db
+      MYSQL_USER: agenda_net
+      MYSQL_PASSWORD: agenda_net
+    ports:
+      - "3306:3306"
+    networks:
+      - agenda-net
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: agenda-net-phpmyadmin
+    restart: always
+    links:
+      - db
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    networks:
+      - agenda-net
+    ports:
+      - 8080:80
+    depends_on:
+      - db

@@ -6,10 +6,7 @@ namespace AgendaNet.Api.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private static readonly string[] Summaries = new[] { "World!!!!", "Hello", };
 
     private readonly ILogger<WeatherForecastController> _logger;
 
@@ -18,15 +15,17 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpGet("Get", Name = "GetWeatherForecast")]
+    public string Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
+        return Summaries.FirstOrDefault();
+    }
+
+    [HttpGet("GetAll", Name = "GetAll")]
+    public IEnumerable<WeatherForecast> GetAll()
+    {
+        return Summaries
+            .Select((summary, index) => new WeatherForecast() { Summary = summary })
             .ToArray();
     }
 }
