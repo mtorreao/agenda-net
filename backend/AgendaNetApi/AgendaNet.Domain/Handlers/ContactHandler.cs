@@ -5,7 +5,7 @@ using Flunt.Notifications;
 
 namespace AgendaNet.Domain.Handlers
 {
-  public class ContactHandler : Notifiable<Notification>, IHandler<CreateContactCommand>
+  public class ContactHandler : Notifiable<Notification>, IHandler<CreateContactCommand>, IHandler<DeleteContactCommand>, IHandler<UpdateContactCommand>
   {
     private readonly IRepository _repository;
 
@@ -20,13 +20,58 @@ namespace AgendaNet.Domain.Handlers
       if (!command.IsValid)
       {
         AddNotifications(command.Notifications);
-        return new GenericCommandResult(false, "Invalid data", command.Notifications);
+        return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
       }
 
-      var contact = new Contact(command.Name!, command.Email!, command.Phone!, new DateTime(), new Guid());
+      var contact = new Contact(command.Name!, command.Email!, command.Phone!, DateTime.UtcNow, Guid.Parse(command.UserId!));
       _repository.Contacts.Create(contact);
 
       return new GenericCommandResult(true, "Contact created", contact);
+    }
+
+    public ICommandResult Handle(UpdateContactCommand command)
+    {
+      command.Validate();
+      if (!command.IsValid)
+      {
+        AddNotifications(command.Notifications);
+        return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
+      }
+
+      var contact = _repository.Contacts.GetById(Guid.Parse(command.Id!), command.UserId!);
+
+      if (contact == null)
+      {
+        AddNotification("Contact", "Contact not found");
+        return new GenericCommandResult(false, "Contato não encontrado", command.Notifications);
+      }
+
+      contact.Update(command.Name!, command.Email!, command.Phone!);
+      _repository.Contacts.Update(contact);
+
+      return new GenericCommandResult(true, "Contato atualizado", contact);
+    }
+
+    public ICommandResult Handle(DeleteContactCommand command)
+    {
+      command.Validate();
+      if (!command.IsValid)
+      {
+        AddNotifications(command.Notifications);
+        return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
+      }
+
+      var contact = _repository.Contacts.GetById(Guid.Parse(command.Id!), command.UserId!);
+
+      if (contact == null)
+      {
+        AddNotification("Contact", "Contact not found");
+        return new GenericCommandResult(false, "Contato não encontrado", command.Notifications);
+      }
+
+      _repository.Contacts.Delete(contact);
+
+      return new GenericCommandResult(true, "Contato deletado com sucesso", null);
     }
   }
 

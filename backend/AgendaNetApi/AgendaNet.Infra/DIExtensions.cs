@@ -49,8 +49,11 @@ public static class DIExtensions
       cfg.CreateMap<SignUpCommand, User>()
          .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
          .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password));
-         
+
       cfg.CreateMap<User, UserDTO>();
+
+      cfg.CreateMap<Contact, ContactDTO>()
+         .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")));
     });
 
     services.AddSingleton(configuration.CreateMapper());
