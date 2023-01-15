@@ -11,6 +11,7 @@ import Toast from 'primevue/toast';
 import InputText from 'primevue/inputtext';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
+import Toolbar from 'primevue/toolbar';
 
 // CSS imports
 import './assets/main.css'
@@ -32,5 +33,6 @@ app.component('Toast', Toast);
 app.component('InputText', InputText);
 app.component('Card', Card);
 app.component('Button', Button);
+app.component('Toolbar', Toolbar);
 
 app.mount('#app')
