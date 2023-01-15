@@ -9,6 +9,8 @@
     "test:unit": "vitest --environment jsdom --root src/"
   },
   "dependencies": {
+    "primeicons": "^6.0.1",
+    "primevue": "^3.22.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },
