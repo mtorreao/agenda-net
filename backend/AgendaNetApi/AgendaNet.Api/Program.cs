@@ -25,6 +25,7 @@ builder.Services.AddAutoMapper();
 builder.Services.AddAgendaNetDB(connectionsConfigurations.AgendaNetDB!);
 builder.Services.AddIdentityDb(connectionsConfigurations.IdentityDB!);
 builder.Services.AddJwtSecurity(tokenConfigurations);
+builder.Services.AddCors();
 
 var app = builder.Build();
 

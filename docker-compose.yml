@@ -14,6 +14,10 @@ services:
     container_name: agenda-net-api
     ports:
       - "5000:80"
+      - "5001:443"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__AgendaNetDB: Server=agenda-net-db;User=agenda_net;Password=agenda_net;SslMode=None;Database=agenda_net_db
     depends_on:
       - db
     networks:
