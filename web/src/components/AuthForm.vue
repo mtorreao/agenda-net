@@ -56,11 +56,6 @@
   gap: 1rem;
 }
 
-.full-width {
-  width: 100%;
-  max-width: 400px;
-}
-
 .buttons-wrapper {
   display: flex;
   flex-direction: row;

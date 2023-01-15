@@ -8,7 +8,7 @@ function submit() {
 
 <template>
   <div class="container-center">
-    <AuthForm @onSubmit="submit" :title="'Login'"/>
+    <AuthForm @onSubmit="submit" :title="'Login'" style="max-width: 400px;"/>
   </div>
 </template>
 
