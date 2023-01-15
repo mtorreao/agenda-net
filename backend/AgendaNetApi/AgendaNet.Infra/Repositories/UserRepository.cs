@@ -2,15 +2,16 @@ using AgendaNet.Domain.Entities;
 using AgendaNet.Domain.Repositories;
 using AgendaNet.Infra.JWT;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace AgendaNet.Infra.Repositories
 {
-  public class UserRepository : IGenericRepository<User>
+  public class UserRepository : IUserRepository<User>
   {
-    private readonly IdentityContext _context;
+    private readonly UserManager<AuthUser> _context;
     private readonly IMapper _mapper;
 
-    public UserRepository(IdentityContext context, IMapper mapper)
+    public UserRepository(UserManager<AuthUser> context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;
@@ -18,31 +19,27 @@ namespace AgendaNet.Infra.Repositories
 
     public void Create(User entity)
     {
-      _context.Users.Add(_mapper.Map<AuthUser>(entity));
-      _context.SaveChanges();
+      _context.CreateAsync(_mapper.Map<AuthUser>(entity), entity.Password);
     }
 
     public void Delete(User entity)
     {
-      _context.Users.Remove(_mapper.Map<AuthUser>(entity));
-      _context.SaveChanges();
+      _context.DeleteAsync(_mapper.Map<AuthUser>(entity));
     }
 
-
-    public IEnumerable<User> GetAll()
+    public User GetByEmail(string email)
     {
-      return _mapper.Map<IEnumerable<User>>(_context.Users.ToList());
+      return _mapper.Map<AuthUser, User>(_context.FindByEmailAsync(email).Result);
     }
 
     public User GetById(Guid id)
     {
-      return _mapper.Map<User>(_context.Users.FirstOrDefault(x => x.Id == id.ToString()));
+      return _mapper.Map<User>(_context.FindByIdAsync(id.ToString()));
     }
 
     public void Update(User entity)
     {
-      _context.Users.Update(_mapper.Map<AuthUser>(entity));
-      _context.SaveChanges();
+      _context.UpdateAsync(_mapper.Map<AuthUser>(entity));
     }
   }
 }

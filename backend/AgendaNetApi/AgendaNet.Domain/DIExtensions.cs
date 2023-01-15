@@ -10,6 +10,7 @@ public static class DIExtensions
   {
     services.AddScoped<IHandler<CreateContactCommand>, ContactHandler>();
     services.AddScoped<IHandler<SignUpCommand>, AuthHandler>();
+    services.AddScoped<IHandler<SignInCommand>, AuthHandler>();
     return services;
   }
 }

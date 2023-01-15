@@ -1,20 +1,23 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
+using AgendaNet.Domain.DTOs;
 using AgendaNet.Domain.Entities;
+using AgendaNet.Domain.Services;
+using AgendaNet.Infra.JWT;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AgendaNet.Infra.JWT;
+namespace AgendaNet.Infra.Services;
 
-public class AccessManager
+public class AuthService : IAuthService
 {
   private UserManager<AuthUser> _userManager;
   private SignInManager<AuthUser> _signInManager;
   private SigningConfigurations _signingConfigurations;
   private TokenConfigurations _tokenConfigurations;
 
-  public AccessManager(
+  public AuthService(
       UserManager<AuthUser> userManager,
       SignInManager<AuthUser> signInManager,
       SigningConfigurations signingConfigurations,
@@ -26,34 +29,7 @@ public class AccessManager
     _tokenConfigurations = tokenConfigurations;
   }
 
-  public bool ValidateCredentials(User user)
-  {
-    bool isValid = false;
-    if (user is not null && !String.IsNullOrWhiteSpace(user.Email.ToString()))
-    {
-      // Verifica a existência do usuário nas tabelas do
-      // ASP.NET Identity
-      var userIdentity = _userManager.FindByEmailAsync(user.Email.ToString()).Result;
-      if (userIdentity is not null)
-      {
-        // Efetua o login com base no Id do usuário e sua senha
-        var resultadoLogin = _signInManager
-            .CheckPasswordSignInAsync(userIdentity, user.Password, false)
-            .Result;
-        if (resultadoLogin.Succeeded)
-        {
-          // Verifica se o usuário em questão possui
-          // a role Acesso-APIs
-          isValid = _userManager.IsInRoleAsync(
-              userIdentity, Roles.Admin).Result;
-        }
-      }
-    }
-
-    return isValid;
-  }
-
-  public Token GenerateToken(User user)
+  public TokenDTO GenerateToken(User user)
   {
     ClaimsIdentity identity = new(
         new GenericIdentity(user.Id.ToString(), "Login"),
@@ -78,11 +54,30 @@ public class AccessManager
     });
     var token = handler.WriteToken(securityToken);
 
-    return new()
+    return new TokenDTO()
     {
-      Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
       Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
       AccessToken = token,
     };
+  }
+
+  public bool ValidateCredentials(User user, string password)
+  {
+    bool isValid = false;
+    if (user is not null && !String.IsNullOrWhiteSpace(user.Email.ToString()))
+    {
+      // Verifica a existência do usuário nas tabelas do Identity
+      var userIdentity = _userManager.FindByEmailAsync(user.Email.ToString()).Result;
+      if (userIdentity is not null)
+      {
+        // Efetua o login com base no email do usuário e sua senha
+        var resultSignIn = _signInManager
+            .CheckPasswordSignInAsync(userIdentity, password, false)
+            .Result;
+        isValid = resultSignIn.Succeeded;
+      }
+    }
+
+    return isValid;
   }
 }

@@ -3,7 +3,7 @@ using AgendaNet.Domain.Repositories;
 
 namespace AgendaNet.Tests.Repositories;
 
-public class FakeUserRepository : IGenericRepository<User>
+public class FakeUserRepository : IUserRepository<User>
 {
   private List<User> _users = new List<User>();
 
@@ -20,6 +20,11 @@ public class FakeUserRepository : IGenericRepository<User>
   public IEnumerable<User> GetAll()
   {
     return _users;
+  }
+
+  public User GetByEmail(string email)
+  {
+    throw new NotImplementedException();
   }
 
   public User GetById(Guid id)

@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using AgendaNet.Domain.Commands;
+using AgendaNet.Domain.DTOs;
 using AgendaNet.Domain.Entities;
 using AgendaNet.Domain.Repositories;
 using AgendaNet.Domain.Services;
@@ -7,6 +8,7 @@ using AgendaNet.Infra;
 using AgendaNet.Infra.Initializers;
 using AgendaNet.Infra.JWT;
 using AgendaNet.Infra.Repositories;
+using AgendaNet.Infra.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +23,11 @@ public static class DIExtensions
 {
   public static IServiceCollection AddServices(this IServiceCollection services)
   {
-    services.AddScoped<IHasher, Hasher>();
+    services.AddScoped<IAuthService, AuthService>();
 
     return services;
   }
+
   public static IServiceCollection AddAutoMapper(this IServiceCollection services)
   {
     services.AddAutoMapper(Assembly.Load("AgendaNet.Infra"), Assembly.Load("AgendaNet.Domain"));
@@ -46,7 +49,8 @@ public static class DIExtensions
       cfg.CreateMap<SignUpCommand, User>()
          .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
          .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password));
-      //  .ConstructUsing(src => new User(src.Name ?? "", src.Email ?? "", src.Password ?? ""));
+         
+      cfg.CreateMap<User, UserDTO>();
     });
 
     services.AddSingleton(configuration.CreateMapper());
@@ -85,7 +89,7 @@ public static class DIExtensions
         dbContextOptions => dbContextOptions.UseInMemoryDatabase("Identity"));
 
     services.AddScoped<InitializerIdentityDb>();
-    services.AddScoped<IGenericRepository<User>, UserRepository>();
+    services.AddScoped<IUserRepository<User>, UserRepository>();
     services.AddScoped<IIdentityRepository, IdentityRepository>();
 
     return services;
@@ -109,10 +113,6 @@ public static class DIExtensions
         })
       .AddEntityFrameworkStores<IdentityContext>()
       .AddDefaultTokenProviders();
-
-    // Configurando a dependência para a classe de validação
-    // de credenciais e geração de tokens
-    services.AddScoped<AccessManager>();
 
     var signingConfigurations = new SigningConfigurations(
         tokenConfigurations.SecretJwtKey!);

@@ -5,5 +5,5 @@ namespace AgendaNet.Tests.Repositories;
 
 public class FakeIdentityRepository : IIdentityRepository
 {
-  public IGenericRepository<User> Users => new FakeUserRepository();
+  public IUserRepository<User> Users => new FakeUserRepository();
 }

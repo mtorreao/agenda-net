@@ -5,9 +5,9 @@ namespace AgendaNet.Infra.Repositories
 {
   public class IdentityRepository : IIdentityRepository
   {
-    public IGenericRepository<User> Users { get; }
+    public IUserRepository<User> Users { get; }
 
-    public IdentityRepository(IGenericRepository<User> users)
+    public IdentityRepository(IUserRepository<User> users)
     {
       Users = users;
     }

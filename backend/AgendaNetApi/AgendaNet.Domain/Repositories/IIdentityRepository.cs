@@ -4,5 +4,5 @@ namespace AgendaNet.Domain.Repositories;
 
 public interface IIdentityRepository
 {
-  public IGenericRepository<User> Users { get; }
+  public IUserRepository<User> Users { get; }
 }

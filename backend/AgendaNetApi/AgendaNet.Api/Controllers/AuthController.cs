@@ -1,6 +1,5 @@
 using System.Net;
 using AgendaNet.Domain.Commands;
-using AgendaNet.Domain.Entities;
 using AgendaNet.Domain.Handlers;
 using AgendaNet.Infra.JWT;
 using Microsoft.AspNetCore.Authorization;
@@ -17,20 +16,11 @@ public class AuthController : ControllerBase
   [HttpPost]
   [ProducesResponseType(typeof(Token), (int)HttpStatusCode.OK)]
   [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-  public ActionResult<Token> SignIn(
-    [FromBody] User user,
-    [FromServices] ILogger<AuthController> logger,
-    [FromServices] AccessManager accessManager)
+  public GenericCommandResult SignIn(
+    [FromBody] SignInCommand command,
+    [FromServices] IHandler<SignInCommand> handler)
   {
-    logger.LogInformation("User: {0}, requesting token for app access", user.Email);
-    if (user is not null && accessManager.ValidateCredentials(user))
-    {
-      return accessManager.GenerateToken(user);
-    }
-    else
-    {
-      return new UnauthorizedResult();
-    }
+    return (GenericCommandResult)handler.Handle(command);
   }
 
   [AllowAnonymous]
@@ -39,9 +29,9 @@ public class AuthController : ControllerBase
   [ProducesResponseType(typeof(Token), (int)HttpStatusCode.OK)]
   [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
   public GenericCommandResult SignUp(
-    [FromBody] SignUpCommand user,
+    [FromBody] SignUpCommand command,
     [FromServices] IHandler<SignUpCommand> handler)
   {
-    return (GenericCommandResult)handler.Handle(user);
+    return (GenericCommandResult)handler.Handle(command);
   }
 }
