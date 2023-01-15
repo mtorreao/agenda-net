@@ -2,22 +2,24 @@
   import { ref } from 'vue';
 
   const props = defineProps({
-    onSubmit: {
-      type: Function,
-      required: true
-    },
     title: {
       type: String,
       required: true
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'login'
     }
   })
 
   const email = ref('')
   const password = ref('')
+  const passwordConfirmation = ref('')
 </script>
 
 <template>
-  <form @submit.prevent="props.onSubmit" class="full-width">
+  <form @submit.prevent="$emit('onSubmit')" class="full-width">
     <Card>
       <template #title>
         <div class="title-wrapper">
@@ -34,10 +36,14 @@
             <InputText id="password" type="password" class="full-width" v-model="password" />
             <label for="password">Senha</label>
           </span>
+          <span v-if="props.type === 'register'" class="p-float-label">
+            <InputText id="passwordConfirmation" type="password" class="full-width" v-model="passwordConfirmation" />
+            <label for="passwordConfirmation">Confirme a senha</label>
+          </span>
         </div>
       </template>
       <template #footer class="buttons-wrapper">
-        <Button type="submit" class="full-width" label="Salvar" />
+        <Button type="submit" class="full-width" :label="props.type === 'register' ? 'Criar' : 'Entrar'" />
       </template>
     </Card>
   </form>
