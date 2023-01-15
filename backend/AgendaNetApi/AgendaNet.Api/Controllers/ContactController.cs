@@ -2,12 +2,14 @@ using AgendaNet.Domain.Commands;
 using AgendaNet.Domain.Entities;
 using AgendaNet.Domain.Handlers;
 using AgendaNet.Domain.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgendaNet.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize("Bearer")]
 public class ContactController : ControllerBase
 {
   [HttpGet]

@@ -32,7 +32,7 @@ $ dotnet tool install -g dotnet-reportgenerator-globaltool
 
 **Gerar nova cobertura**
 ```bash
-$ cd backend/AgendaNetApi/AgendaNet.Tests && dotnet test --collect:"XPlat Code Coverage" && cd ../../../
+$ dotnet test backend/AgendaNetApi/AgendaNet.Tests --collect:"XPlat Code Coverage"
 ```
 
 **Gerar novo relatório em html**

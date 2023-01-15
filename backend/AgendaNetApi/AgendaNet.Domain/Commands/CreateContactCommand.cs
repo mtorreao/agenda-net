@@ -25,9 +25,9 @@ namespace AgendaNet.Domain.Commands
       AddNotifications(
         new Contract<Notification>()
           .Requires()
-          .IsNotNullOrEmpty(Name, "Name", "Name is required")
-          .IsEmailOrEmpty(Email, "Email", "Email is invalid")
-          .IsNotNullOrEmpty(Phone, "Phone", "Phone is required")
+          .IsNotNullOrEmpty(Name, "Name", "Nome é obrigatório")
+          .IsEmailOrEmpty(Email, "Email", "Email inválido")
+          .IsNotNullOrEmpty(Phone, "Phone", "Telefone é obrigatório")
       );
     }
   }
