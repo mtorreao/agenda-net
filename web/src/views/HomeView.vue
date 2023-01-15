@@ -11,16 +11,16 @@ const contacts = ref([
 </script>
 
 <template>
-  <div style="padding-bottom: 30px;">
+  <div>
     <br />
-    <Toolbar class="mb-4">
-      <template #start>
-        <h3>Agenda</h3>
+    <Card>
+      <template #content>
+        <div class="title-card-wrapper" style="margin: -30px 0;">
+          <h2>Agenda</h2>
+          <Button label="Novo contato" icon="pi pi-plus" class="p-button-success mr-2" />
+        </div>
       </template>
-      <template #end>
-        <Button label="Novo contato" icon="pi pi-plus" class="p-button-success mr-2" />
-      </template>
-    </Toolbar>
+    </Card>
     <br />
 
     <div class="list-wrapper">
@@ -30,6 +30,13 @@ const contacts = ref([
 </template>
 
 <style scoped>
+.title-card-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .list-wrapper {
   display: flex;
   flex-direction: column;
