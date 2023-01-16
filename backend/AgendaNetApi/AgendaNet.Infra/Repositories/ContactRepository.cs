@@ -1,49 +1,55 @@
 using AgendaNet.Domain.Entities;
 using AgendaNet.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgendaNet.Infra.Repositories
 {
   public class ContactRepository : IGenericRepository<Contact>
   {
-    private readonly DataContext _context;
+    private readonly IDbContextFactory<DataContext> _contextFactory;
 
-    public ContactRepository(DataContext context)
+    public ContactRepository(IDbContextFactory<DataContext> context)
     {
-      _context = context;
+      _contextFactory = context;
     }
 
     public void Create(Contact entity)
     {
-      _context.Contacts.Add(entity);
-      _context.SaveChanges();
+      using var context = _contextFactory.CreateDbContext();
+      context.Contacts.Add(entity);
+      context.SaveChanges();
     }
 
     public void Delete(Contact entity)
     {
-      _context.Contacts.Remove(entity);
-      _context.SaveChanges();
+      using var context = _contextFactory.CreateDbContext();
+      context.Contacts.Remove(entity);
+      context.SaveChanges();
     }
 
     public IEnumerable<Contact> GetAll(string? userId)
     {
+      using var context = _contextFactory.CreateDbContext();
       if (userId == null)
-        return _context.Contacts.ToList();
+        return context.Contacts.ToList();
       var guidUserId = Guid.Parse(userId);
-      return _context.Contacts.Where(c => c.UserId == guidUserId).ToList();
+      return context.Contacts.Where(c => c.UserId == guidUserId).ToList();
     }
 
     public Contact? GetById(string id, string? userId)
     {
+      using var context = _contextFactory.CreateDbContext();
       var guidId = Guid.Parse(id);
       if (userId == null)
-        return _context.Contacts.FirstOrDefault(x => x.Id == guidId);
-      return _context.Contacts.FirstOrDefault(x => x.Id == guidId && x.UserId == Guid.Parse(userId));
+        return context.Contacts.FirstOrDefault(x => x.Id == guidId);
+      return context.Contacts.FirstOrDefault(x => x.Id == guidId && x.UserId == Guid.Parse(userId));
     }
 
     public void Update(Contact entity)
     {
-      _context.Contacts.Update(entity);
-      _context.SaveChanges();
+      using var context = _contextFactory.CreateDbContext();
+      context.Contacts.Update(entity);
+      context.SaveChanges();
     }
   }
 }

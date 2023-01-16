@@ -69,7 +69,7 @@ public static class DIExtensions
   {
     var serverVersion = new MySqlServerVersion(new Version(5, 7));
 
-    services.AddDbContext<DataContext>(
+    services.AddDbContextFactory<DataContext>(
         dbContextOptions => dbContextOptions
             .UseMySql(connectionString, serverVersion, builder => builder
                 .MigrationsAssembly("AgendaNet.Infra")
@@ -81,9 +81,9 @@ public static class DIExtensions
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors());
 
-    services.AddScoped<IRepository, Repository>();
-    services.AddScoped<IGenericRepository<Contact>, ContactRepository>();
-    services.AddScoped<InitializerDataDb>();
+    services.AddSingleton<IRepository, Repository>();
+    services.AddSingleton<IGenericRepository<Contact>, ContactRepository>();
+    services.AddSingleton<InitializerDataDb>();
 
     return services;
   }
@@ -167,6 +167,7 @@ public static class DIExtensions
   public static IServiceCollection AddRabbitMq(this IServiceCollection services)
   {
     services.AddSingleton<IMessageProducer, MessageProducer>();
+    services.AddHostedService<CreateContactConsumer>();
 
     return services;
   }

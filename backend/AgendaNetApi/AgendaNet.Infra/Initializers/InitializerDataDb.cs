@@ -1,18 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace AgendaNet.Infra.Initializers;
 
 public class InitializerDataDb
 {
-  private readonly DataContext _dataContext;
+  private readonly IDbContextFactory<DataContext> _dataContext;
 
-  public InitializerDataDb(DataContext dataContext)
+  public InitializerDataDb(IDbContextFactory<DataContext> dataContext)
   {
     _dataContext = dataContext;
   }
 
   public void Init() {
-    if (!_dataContext.Database.EnsureDeleted())
+    using var context = _dataContext.CreateDbContext();
+    if (!context.Database.EnsureDeleted())
       throw new Exception("Erro durante a exclusão do banco de dados da aplicação.");
-    if (!_dataContext.Database.EnsureCreated())
+    if (!context.Database.EnsureCreated())
       throw new Exception("Erro durante a criação do banco de dados da aplicação.");
   }
 }
