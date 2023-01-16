@@ -38,6 +38,9 @@ $ docker-compose up
 **Acesso a aplicação**
 http://localhost:4200
 
+**Acesso ao swagger do backend**
+http://localhost:5000/swagger
+
 **Painel administrativo do BD**
 http://localhost:8080
 
