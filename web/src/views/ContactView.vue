@@ -32,9 +32,9 @@ provide('contactFormDialogRef', dialogRef)
 </script>
 
 <template>
-  <div>
+  <div class="container-centralized">
     <br />
-    <Card>
+    <Card class="element-wrapper" >
       <template #content>
         <div class="title-card-wrapper" style="margin: -30px 0;">
           <h2>Agenda</h2>
@@ -44,8 +44,9 @@ provide('contactFormDialogRef', dialogRef)
     </Card>
     <br />
 
-    <div class="list-wrapper">
-      <ContactCard v-for="contact in contactStore.contacts" :key="contact.id" :contact="contact" @onEdit="showDialog(contact)" @onRemove="deleteContact(contact)" />
+    <div class="list-wrapper element-wrapper">
+      <ContactCard v-for="contact in contactStore.contacts" :key="contact.id" :contact="contact"
+        @onEdit="showDialog(contact)" @onRemove="deleteContact(contact)" />
     </div>
   </div>
   <DynamicDialog />
@@ -66,5 +67,30 @@ provide('contactFormDialogRef', dialogRef)
   justify-content: flex-start;
   height: 100vh;
   gap: var(--inline-spacing);
+}
+
+.container-centralized {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 320px) {
+  .element-wrapper {
+    width: 300px;
+  }
+}
+
+@media (min-width: 425px) {
+  .element-wrapper {
+    width: 400px;
+  }
+}
+
+@media (min-width: 768px) {
+  .element-wrapper {
+    width: 450px;
+  }
 }
 </style>

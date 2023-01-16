@@ -36,8 +36,8 @@ class AuthService {
         name: name,
       }),
     }).then((response) => {
-      if (response.success === true && response.data.accessToken) {
-        this._setToken(response.data.accessToken);
+      if (response.success === true && response.data.token.accessToken) {
+        this._setToken(response.data.token.accessToken);
       }
       return response;
     });

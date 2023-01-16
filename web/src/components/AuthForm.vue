@@ -1,8 +1,5 @@
 <script setup>
 import { ref, computed } from "vue";
-import { useToast } from "primevue/usetoast";
-
-const toast = useToast()
 
 const props = defineProps({
   title: {
@@ -73,8 +70,6 @@ function submit() {
     .then((validationErrors) => {
       if (validationErrors)
         errors.value = validationErrors;
-      else 
-        toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Cadastro realizado com sucesso!', life: 3000 });
     })
     .finally(() => {
       isLoading.value = false;

@@ -1,10 +1,10 @@
 <script setup>
 import { onMounted } from "vue";
-import { RouterLink, RouterView, useRouter } from "vue-router";
+import { RouterLink, RouterView } from "vue-router";
+import router from "./router";
 import { useAuthStore } from "./stores/auth";
 
 const authStore = useAuthStore();
-const router = useRouter();
 
 onMounted(async () => {
   authStore.checkLogin();
@@ -12,7 +12,7 @@ onMounted(async () => {
 
 async function signOut() {
   authStore.logout();
-  await router.push("/sign-in");
+  router.push("/sign-in");
 }
 </script>
 
