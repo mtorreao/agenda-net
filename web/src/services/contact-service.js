@@ -1,7 +1,8 @@
 import { useAuthStore } from "../stores/auth";
 
 class ContactService {
-  _baseUrl = "http://agenda-net-api:5000/api/v1";
+  // _baseUrl = "http://agenda-net-api:5000/api/v1";
+  _baseUrl = "http://localhost:5000/api/v1";
   _fetch = (url, options) => {
     const headers = {
       Accept: "application/json",

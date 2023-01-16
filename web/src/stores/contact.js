@@ -18,24 +18,15 @@ export const useContactStore = defineStore("contactStore", {
     },
     async create(contact) {
       const response = await contactService.create(contact);
-      if (response.success === true) {
-        this.contacts.push(response.data);
-      }
+      this.findAll();
       return response;
     },
     async update(contact) {
       const response = await contactService.update(contact);
-      if (response.success === true) {
-        const index = this.contacts.findIndex((c) => c.id === contact.id);
-        this.contacts[index] = response.data;
-      }
       return response;
     },
     async delete(contact) {
       const response = await contactService.delete(contact);
-      if (response.success === true) {
-        this.contacts = this.contacts.filter((c) => c.id !== contact.id);
-      }
       return response;
     },
     async getById(id) {

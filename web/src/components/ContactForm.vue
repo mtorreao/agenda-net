@@ -29,6 +29,7 @@ async function submit() {
     } else {
       await contactStore.create(contact.value);
     }
+    await contactStore.findAll();
     resetForm();
     dialogRef.value.close()
   } catch (error) {

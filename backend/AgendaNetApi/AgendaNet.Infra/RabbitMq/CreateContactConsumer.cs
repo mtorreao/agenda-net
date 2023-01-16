@@ -68,7 +68,7 @@ public class CreateContactConsumer : BackgroundService
 
     var message = JsonSerializer.Deserialize<CreateContactMessage>(Encoding.UTF8.GetString(e.Body.ToArray()));
 
-    _repository.Contacts.Create(new Contact(message!.Name!, message.Email!, message.Phone!, Guid.Parse(message.UserId!)));
+    _repository.Contacts.Create(new Contact(Guid.Parse(message!.Id!), message!.Name!, message.Email!, message.Phone!, Guid.Parse(message.UserId!)));
 
     _logger.LogInformation($"[Contato criado no banco | {DateTime.Now:yyyy-MM-dd HH:mm:ss}] " + message.Email);
 

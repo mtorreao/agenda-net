@@ -30,6 +30,7 @@ namespace AgendaNet.Domain.Handlers
       this._messageProducer.Publish<CreateContactMessage>(
         new CreateContactMessage()
         {
+          Id = contact.Id.ToString(),
           Name = contact.Name,
           Email = contact.Email,
           Phone = contact.Phone,

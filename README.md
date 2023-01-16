@@ -35,6 +35,15 @@ Ficou faltando o banco não relacional para consulta rápida e cacheada dos dado
 $ docker-compose up
 ```
 
+**Acesso a aplicação**
+http://localhost:4200
+
+**Painel administrativo do BD**
+http://localhost:8080
+
+**Painel administrativo do RabbitMQ**
+http://localhost:15672
+
 ### RabbitMQ
 
 Foi implementado, mas por falta de tempo deixei apenas no comando CreateContact, faltando o Update, Delete, e outras filas.

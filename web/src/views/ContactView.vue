@@ -7,6 +7,8 @@ import { useContactStore } from '../stores/contact'
 
 const contactStore = useContactStore()
 
+const contacts = ref([])
+
 onMounted( () => {
   contactStore.findAll()
 })
@@ -24,11 +26,16 @@ function showDialog(contact) {
   })
 }
 
-function deleteContact(contact) {
-  contactStore.delete(contact)
+async function deleteContact(contact) {
+  await contactStore.delete(contact)
+  await contactStore.findAll()
 }
 
 provide('contactFormDialogRef', dialogRef)
+
+contactStore.$subscribe(() => {
+  contacts.value = contactStore.contacts
+}, { deep: true, immediate: true })
 </script>
 
 <template>
@@ -45,7 +52,7 @@ provide('contactFormDialogRef', dialogRef)
     <br />
 
     <div class="list-wrapper element-wrapper">
-      <ContactCard v-for="contact in contactStore.contacts" :key="contact.id" :contact="contact"
+      <ContactCard v-for="contact in contacts" :key="contact.id" :contact="contact"
         @onEdit="showDialog(contact)" @onRemove="deleteContact(contact)" />
     </div>
   </div>
