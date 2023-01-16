@@ -7,6 +7,8 @@ volumes:
 networks:
   agenda-net:
     driver: bridge
+  rabbitmq_net:
+    driver: bridge
 
 services:
   api:
@@ -22,6 +24,7 @@ services:
       - db
     networks:
       - agenda-net
+      - rabbitmq_net
   
   db:
     image: mysql:5.7
@@ -56,3 +59,15 @@ services:
       - 8080:80
     depends_on:
       - db
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    # volumes:
+        # - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
+        # - ./.docker/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - rabbitmq_net
