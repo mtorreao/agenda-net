@@ -1,9 +1,11 @@
 using AgendaNet.Domain.Handlers;
 using AgendaNet.Domain.Commands;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AgendaNet;
 
+[ExcludeFromCodeCoverage]
 public static class DIExtensions
 {
   public static IServiceCollection AddHandlers(this IServiceCollection services)

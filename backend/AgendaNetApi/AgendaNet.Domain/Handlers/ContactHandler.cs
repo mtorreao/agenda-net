@@ -1,11 +1,10 @@
 using AgendaNet.Domain.Commands;
 using AgendaNet.Domain.Entities;
 using AgendaNet.Domain.Repositories;
-using Flunt.Notifications;
 
 namespace AgendaNet.Domain.Handlers
 {
-  public class ContactHandler : Notifiable<Notification>, IHandler<CreateContactCommand>, IHandler<DeleteContactCommand>, IHandler<UpdateContactCommand>
+  public class ContactHandler : IHandler<CreateContactCommand>, IHandler<DeleteContactCommand>, IHandler<UpdateContactCommand>
   {
     private readonly IRepository _repository;
 
@@ -19,7 +18,6 @@ namespace AgendaNet.Domain.Handlers
       command.Validate();
       if (!command.IsValid)
       {
-        AddNotifications(command.Notifications);
         return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
       }
 
@@ -34,15 +32,14 @@ namespace AgendaNet.Domain.Handlers
       command.Validate();
       if (!command.IsValid)
       {
-        AddNotifications(command.Notifications);
         return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
       }
 
-      var contact = _repository.Contacts.GetById(Guid.Parse(command.Id!), command.UserId!);
+      var contact = _repository.Contacts.GetById(command.Id!, command.UserId!);
 
       if (contact == null)
       {
-        AddNotification("Contact", "Contact not found");
+        command.AddNotification("Contact", "Contact not found");
         return new GenericCommandResult(false, "Contato não encontrado", command.Notifications);
       }
 
@@ -57,15 +54,14 @@ namespace AgendaNet.Domain.Handlers
       command.Validate();
       if (!command.IsValid)
       {
-        AddNotifications(command.Notifications);
         return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
       }
 
-      var contact = _repository.Contacts.GetById(Guid.Parse(command.Id!), command.UserId!);
+      var contact = _repository.Contacts.GetById(command.Id!, command.UserId!);
 
       if (contact == null)
       {
-        AddNotification("Contact", "Contact not found");
+        command.AddNotification("Contact", "Contact not found");
         return new GenericCommandResult(false, "Contato não encontrado", command.Notifications);
       }
 

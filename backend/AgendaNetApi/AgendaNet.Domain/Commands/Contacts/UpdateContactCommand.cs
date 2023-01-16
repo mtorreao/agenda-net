@@ -9,6 +9,15 @@ namespace AgendaNet.Domain.Commands
     {
     }
 
+    public UpdateContactCommand(string id, string name, string email, string phone, string? userId)
+    {
+      Id = id;
+      Name = name;
+      Email = email;
+      Phone = phone;
+      UserId = userId;
+    }
+
     public string? Id { get; set; }
     public string? Name { get; set; }
     public string? Email { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using AgendaNet.Domain.Commands;
 using AgendaNet.Domain.DTOs;
 using AgendaNet.Domain.Entities;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AgendaNet;
 
+[ExcludeFromCodeCoverage]
 public static class DIExtensions
 {
   public static IServiceCollection AddServices(this IServiceCollection services)

@@ -7,7 +7,7 @@ namespace AgendaNet.Domain.Repositories
     void Create(T entity);
     void Update(T entity);
     void Delete(T entity);
-    T? GetById(Guid id, string? userId);
+    T? GetById(string id, string? userId);
     IEnumerable<T> GetAll(string? userId);
   }
 }

@@ -22,9 +22,10 @@ public class FakeContactRepository : IGenericRepository<Contact>
     return _contacts;
   }
 
-  public Contact? GetById(Guid id, string? userId)
+  public Contact? GetById(string id, string? userId)
   {
-    return _contacts.First(x => x.Id == id);
+    var guid = new Guid(id);
+    return _contacts.FirstOrDefault(x => x.Id == guid);
   }
 
   public void Update(Contact entity)
