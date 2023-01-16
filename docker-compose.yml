@@ -9,8 +9,23 @@ networks:
     driver: bridge
   rabbitmq_net:
     driver: bridge
+  db_net:
+    driver: bridge
 
 services:
+  web:
+    build: ./web
+    container_name: agenda-net-web
+    volumes: 
+      - ./web:/app
+      - /app/node_modules
+    ports:
+      - "4200:8080"
+    depends_on:
+      - api
+    networks:
+      - agenda-net
+
   api:
     build: ./backend/AgendaNetApi
     container_name: agenda-net-api
@@ -20,8 +35,13 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__AgendaNetDB: Server=agenda-net-db;User=agenda_net;Password=agenda_net;SslMode=None;Database=agenda_net_db
+      ConnectionStrings__RabbitMQ: amqp://guest:guest@agenda-net-rabbitmq:5672
+    restart: on-failure
     depends_on:
+      - rabbitmq
       - db
+    links: 
+      - rabbitmq
     networks:
       - agenda-net
       - rabbitmq_net
@@ -41,6 +61,7 @@ services:
       - "3306:3306"
     networks:
       - agenda-net
+      - db_net
 
   phpmyadmin:
     image: phpmyadmin
@@ -54,7 +75,7 @@ services:
       - PMA_USER=root
       - PMA_PASSWORD=root
     networks:
-      - agenda-net
+      - db_net
     ports:
       - 8080:80
     depends_on:
@@ -62,12 +83,9 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
+    container_name: agenda-net-rabbitmq
     ports:
         - 5672:5672
         - 15672:15672
-    # volumes:
-        # - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
-        # - ./.docker/rabbitmq/log/:/var/log/rabbitmq
     networks:
         - rabbitmq_net

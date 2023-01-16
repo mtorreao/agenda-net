@@ -11,10 +11,12 @@ namespace AgendaNet.Infra.RabbitMq;
 public class MessageProducer : IMessageProducer
 {
   private readonly ILogger<MessageProducer> _logger;
+  private readonly string _connectionString;
 
-  public MessageProducer(ILogger<MessageProducer> logger)
+  public MessageProducer(ILogger<MessageProducer> logger, string connectionString)
   {
     _logger = logger;
+    _connectionString = connectionString;
   }
 
   public void Publish<T>(T message) where T : Message
@@ -24,9 +26,7 @@ public class MessageProducer : IMessageProducer
 
       var factory = new ConnectionFactory()
       {
-        HostName = "localhost",
-        UserName = "guest",
-        Password = "guest"
+        Uri = new System.Uri(_connectionString)
       };
       using var conn = factory.CreateConnection();
       using var channel = conn.CreateModel();

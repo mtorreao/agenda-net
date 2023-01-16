@@ -16,11 +16,13 @@ public class CreateContactConsumer : BackgroundService
 {
   private readonly ILogger<CreateContactConsumer> _logger;
   private readonly IRepository _repository;
+  private readonly string _connectionString;
 
-  public CreateContactConsumer(ILogger<CreateContactConsumer> logger, IRepository repository)
+  public CreateContactConsumer(ILogger<CreateContactConsumer> logger, IRepository repository, string connectionString)
   {
     _logger = logger;
     _repository = repository;
+    _connectionString = connectionString;
   }
 
   protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -30,9 +32,7 @@ public class CreateContactConsumer : BackgroundService
     {
       var factory = new ConnectionFactory()
       {
-        HostName = "localhost",
-        UserName = "guest",
-        Password = "guest"
+        Uri = new System.Uri(_connectionString)
       };
       using var conn = factory.CreateConnection();
       using var channel = conn.CreateModel();

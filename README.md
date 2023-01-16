@@ -14,10 +14,10 @@ Desenvolver um CRUD para uma agenda (nome, email e telefone) utilizando .NET 6 c
 - [X] Utilização forte de componentes no frontend
 
 **Diferenciais:**
-- [X] Utilização do padrão de projeto CQRS - OK
-- [X] Utilização de mensageria com RabbitMq - OK
+- [X] Utilização do padrão de projeto CQRS
+- [X] Utilização de mensageria com RabbitMq
 - [ ] Cobertura de testes no front
-- [X] Dockerfile da aplicação - OK
+- [X] Dockerfile da aplicação
 
 ## Arquitetura
 
@@ -28,6 +28,12 @@ Essa imagem o que tentei atingir
 ![Screenshot](Arquitetura.png)
 
 Ficou faltando o banco não relacional para consulta rápida e cacheada dos dados, que pretendia utilizar o Redis, infelizmente não consegui apenas por falta de tempo.
+
+## Instalação
+
+```bash
+$ docker-compose up
+```
 
 ### RabbitMQ
 

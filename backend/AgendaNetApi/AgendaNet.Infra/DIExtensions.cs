@@ -164,13 +164,13 @@ public static class DIExtensions
     return services;
   }
 
-  public static IServiceCollection AddRabbitMq(this IServiceCollection services)
+  public static IServiceCollection AddRabbitMq(this IServiceCollection services, string connectionString)
   {
-    services.AddSingleton<IMessageProducer, MessageProducer>();
-    services.AddHostedService<CreateContactConsumer>();
+    services.AddSingleton<IMessageProducer, MessageProducer>(b => new MessageProducer(b.GetRequiredService<ILogger<MessageProducer>>(), connectionString));
+    services.AddHostedService<CreateContactConsumer>(b => new CreateContactConsumer(b.GetRequiredService<ILogger<CreateContactConsumer>>(), b.GetRequiredService<IRepository>(), connectionString));
 
     return services;
   }
-  
+
 }
 

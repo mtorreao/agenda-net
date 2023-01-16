@@ -14,6 +14,8 @@ new ConfigureFromConfigurationOptions<TokenConfigurations>(
     builder.Configuration.GetSection("TokenConfigurations"))
         .Configure(tokenConfigurations);
 
+        
+
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -24,7 +26,7 @@ builder.Services.AddServices();
 builder.Services.AddAutoMapper();
 builder.Services.AddAgendaNetDB(connectionsConfigurations.AgendaNetDB!);
 builder.Services.AddIdentityDb(connectionsConfigurations.IdentityDB!);
-builder.Services.AddRabbitMq();
+builder.Services.AddRabbitMq(connectionsConfigurations.RabbitMQ!);
 builder.Services.AddJwtSecurity(tokenConfigurations);
 builder.Services.AddCors();
 
