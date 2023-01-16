@@ -52,10 +52,12 @@ watch(
         <label for="email">Email</label>
       </span>
       <span class="p-float-label">
-        <InputText
+        <InputMask
           id="phone"
           type="text"
           class="full-width"
+          mask="(99) 9 9999-9999"
+          unmask
           v-model="contact.phone" />
         <label for="phone">Telefone</label>
       </span>

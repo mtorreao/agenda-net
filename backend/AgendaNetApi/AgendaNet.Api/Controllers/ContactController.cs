@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AgendaNet.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/[controller]")]
 [Authorize("Bearer")]
 public class ContactController : ControllerBase
 {

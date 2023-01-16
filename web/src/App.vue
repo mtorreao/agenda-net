@@ -1,29 +1,41 @@
 <script setup>
-import { onMounted } from 'vue';
-import { RouterLink, RouterView } from 'vue-router'
-import { useToast } from "primevue/usetoast";
+import { onMounted } from "vue";
+import { RouterLink, RouterView, useRouter } from "vue-router";
+import { useAuthStore } from "./stores/auth";
 
-onMounted(() => {
-  // const toast = useToast()
-  // toast.add({
-  //   severity: 'success',
-  //   summary: 'Success Message',
-  //   detail: 'Order submitted',
-  //   life: 3000
-  // })
+const authStore = useAuthStore();
+const router = useRouter();
+
+onMounted(async () => {
+  authStore.checkLogin();
 });
 
+async function signOut() {
+  authStore.logout();
+  await router.push("/sign-in");
+}
 </script>
 
 <template>
   <header>
-    <Menubar >
+    <Menubar>
       <template #start>
         <RouterLink class="nav-item text-larger" to="/">Minha Agenda</RouterLink>
       </template>
       <template #end>
-        <RouterLink class="nav-item" to="/sign-in">Login</RouterLink>
-        <RouterLink class="nav-item" to="/sign-up">Cadastro</RouterLink>
+        <RouterLink
+          v-if="authStore.isLogged === false"
+          class="nav-item"
+          to="/sign-in">Login</RouterLink>
+        <RouterLink
+          v-if="authStore.isLogged === false"
+          class="nav-item"
+          to="/sign-up">Cadastro</RouterLink>
+        <a
+          v-if="authStore.isLogged === true"
+          class="nav-item"
+          href="#"
+          @click="signOut">Sair</a>
       </template>
     </Menubar>
   </header>

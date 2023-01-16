@@ -1,42 +1,47 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import PrimeVue from 'primevue/config';
-import ToastService from 'primevue/toastservice';
-import DialogService from 'primevue/dialogservice';
+import { createPinia } from "pinia";
+import PrimeVue from "primevue/config";
+import DialogService from "primevue/dialogservice";
+import ToastService from "primevue/toastservice";
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
 
 // Component imports
-import Dialog from 'primevue/dialog';
-import Menubar from 'primevue/menubar';
-import Toast from 'primevue/toast';
-import InputText from 'primevue/inputtext';
-import Card from 'primevue/card';
-import Button from 'primevue/button';
-import Toolbar from 'primevue/toolbar';
-import DynamicDialog from 'primevue/dynamicdialog';
+import Button from "primevue/button";
+import Card from "primevue/card";
+import Dialog from "primevue/dialog";
+import DynamicDialog from "primevue/dynamicdialog";
+import InputMask from "primevue/inputmask";
+import InputText from "primevue/inputtext";
+import Menubar from "primevue/menubar";
+import Toast from "primevue/toast";
+import Toolbar from "primevue/toolbar";
 
 // CSS imports
-import './assets/main.css'
+import "./assets/main.css";
 
-import 'primevue/resources/themes/md-light-deeppurple/theme.css'       //theme
-import 'primevue/resources/primevue.min.css'                           //core css
-import 'primeicons/primeicons.css'                                     //icons
+import "primeicons/primeicons.css"; //icons
+import "primevue/resources/primevue.min.css"; //core css
+import "primevue/resources/themes/md-light-deeppurple/theme.css"; //theme
 
-const app = createApp(App)
+const app = createApp(App);
+const pinia = createPinia();
 
-app.use(router)
+app.use(pinia);
+app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(DialogService);
 
-// Components
-app.component('Dialog', Dialog);
-app.component('Menubar', Menubar);
-app.component('Toast', Toast);
-app.component('InputText', InputText);
-app.component('Card', Card);
-app.component('Button', Button);
-app.component('Toolbar', Toolbar);
-app.component('DynamicDialog', DynamicDialog);
+// Global Components
+app.component("Dialog", Dialog);
+app.component("Menubar", Menubar);
+app.component("Toast", Toast);
+app.component("InputText", InputText);
+app.component("Card", Card);
+app.component("Button", Button);
+app.component("Toolbar", Toolbar);
+app.component("DynamicDialog", DynamicDialog);
+app.component("InputMask", InputMask);
 
-app.mount('#app')
+app.mount("#app");

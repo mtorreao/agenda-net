@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AgendaNet.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/v1/[controller]")]
 public class AuthController : ControllerBase
 {
   [AllowAnonymous]
