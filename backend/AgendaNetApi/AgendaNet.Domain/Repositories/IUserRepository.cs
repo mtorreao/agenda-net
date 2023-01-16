@@ -7,7 +7,7 @@ namespace AgendaNet.Domain.Repositories
     void Create(T entity);
     void Update(T entity);
     void Delete(T entity);
-    T GetById(Guid id);
-    T GetByEmail(string email);
+    T? GetById(string id);
+    T? GetByEmail(string email);
   }
 }

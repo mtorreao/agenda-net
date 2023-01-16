@@ -22,14 +22,15 @@ public class FakeUserRepository : IUserRepository<User>
     return _users;
   }
 
-  public User GetByEmail(string email)
+  public User? GetByEmail(string email)
   {
-    throw new NotImplementedException();
+    return _users.FirstOrDefault(x => x.Email == email);
   }
 
-  public User GetById(Guid id)
+  public User? GetById(string id)
   {
-    return _users.First(x => x.Id == id);
+    var guid = new Guid(id);
+    return _users.FirstOrDefault(x => x.Id == guid);
   }
 
   public void Update(User entity)

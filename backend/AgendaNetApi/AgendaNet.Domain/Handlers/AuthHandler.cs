@@ -4,11 +4,10 @@ using AgendaNet.Domain.Entities;
 using AgendaNet.Domain.Repositories;
 using AgendaNet.Domain.Services;
 using AutoMapper;
-using Flunt.Notifications;
 
 namespace AgendaNet.Domain.Handlers;
 
-public class AuthHandler : Notifiable<Notification>, IHandler<SignUpCommand>, IHandler<SignInCommand>
+public class AuthHandler : IHandler<SignUpCommand>, IHandler<SignInCommand>
 {
   private readonly IIdentityRepository _repository;
   private readonly IAuthService _authService;
@@ -26,7 +25,6 @@ public class AuthHandler : Notifiable<Notification>, IHandler<SignUpCommand>, IH
     command.Validate();
     if (!command.IsValid)
     {
-      command.AddNotifications(command.Notifications);
       return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
     }
 
@@ -47,7 +45,7 @@ public class AuthHandler : Notifiable<Notification>, IHandler<SignUpCommand>, IH
     return new GenericCommandResult(true, "Novo usuário foi criado", new CreateUserDTO()
     {
       User = _mapper.Map<UserDTO>(user),
-      Token = _authService.GenerateToken(user)
+      Token = _authService.GenerateToken(user!)
     });
   }
 
@@ -56,21 +54,20 @@ public class AuthHandler : Notifiable<Notification>, IHandler<SignUpCommand>, IH
     command.Validate();
     if (!command.IsValid)
     {
-      AddNotifications(command.Notifications);
       return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
     }
 
     var user = _repository.Users.GetByEmail(command.Email!);
     if (user == null)
     {
-      AddNotification("Email", "Usuário não encontrado");
+      command.AddNotification("Email", "Usuário não encontrado");
       return new GenericCommandResult(false, "Usuário não encontrado", command.Notifications);
     }
 
     var isAValidUser = _authService.ValidateCredentials(user, command.Password!);
     if (!isAValidUser)
     {
-      AddNotification("Password", "Usuário ou senha inválidos");
+      command.AddNotification("Password", "Usuário ou senha inválidos");
       return new GenericCommandResult(false, "Usuário ou senha inválidos", command.Notifications);
     }
 

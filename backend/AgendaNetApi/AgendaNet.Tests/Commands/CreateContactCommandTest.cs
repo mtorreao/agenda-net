@@ -4,8 +4,8 @@ namespace AgendaNet.Tests.Commands
 {
   public class CreateContactCommandTest
   {
-    private readonly CreateContactCommand _invalidCommand = new CreateContactCommand("", "", "");
-    private readonly CreateContactCommand _validCommand = new CreateContactCommand("Test", "a@a.com", "81912341234");
+    private readonly CreateContactCommand _invalidCommand = new CreateContactCommand("", "", "", "");
+    private readonly CreateContactCommand _validCommand = new CreateContactCommand("Test", "a@a.com", "81912341234", "1234");
 
     public CreateContactCommandTest()
     {
@@ -28,7 +28,7 @@ namespace AgendaNet.Tests.Commands
     [Fact]
     public void Should_Be_Invalid_If_Email_Is_Not_A_Valid_Email()
     {
-      var command = new CreateContactCommand("Test", "a", "81912341234");
+      var command = new CreateContactCommand("Test", "a", "81912341234", null);
       command.Validate();
       Assert.NotNull(command.Notifications.FirstOrDefault(n => n.Key == "Email"));
       Assert.False(command.IsValid);
