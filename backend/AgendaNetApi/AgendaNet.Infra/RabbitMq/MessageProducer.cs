@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json;
 using AgendaNet.Domain.Messages;
@@ -6,6 +7,7 @@ using RabbitMQ.Client;
 
 namespace AgendaNet.Infra.RabbitMq;
 
+[ExcludeFromCodeCoverage]
 public class MessageProducer : IMessageProducer
 {
   private readonly ILogger<MessageProducer> _logger;

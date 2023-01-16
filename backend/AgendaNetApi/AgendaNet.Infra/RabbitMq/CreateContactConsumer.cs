@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json;
 using AgendaNet.Domain.Entities;
@@ -10,6 +11,7 @@ using RabbitMQ.Client.Events;
 
 namespace AgendaNet.Infra.RabbitMq;
 
+[ExcludeFromCodeCoverage]
 public class CreateContactConsumer : BackgroundService
 {
   private readonly ILogger<CreateContactConsumer> _logger;
