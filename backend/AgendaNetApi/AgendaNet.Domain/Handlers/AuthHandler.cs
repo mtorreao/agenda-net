@@ -76,7 +76,10 @@ public class AuthHandler : Notifiable<Notification>, IHandler<SignUpCommand>, IH
 
     var token = _authService.GenerateToken(user);
 
-    return new GenericCommandResult(true, "Login feito com sucesso", token);
+    return new GenericCommandResult(true, "Login feito com sucesso", new CreateUserDTO() {
+      User = _mapper.Map<UserDTO>(user),
+      Token = token
+    });
   }
 }
 

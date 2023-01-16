@@ -6,15 +6,18 @@ const authService = AuthService.instance;
 export const useAuthStore = defineStore("authStore", {
   state: () => ({
     authState: "not_logged",
+    user: null,
   }),
   getters: {
     isLogged: (state) => state.authState === "logged",
+    getUser: (state) => state.user,
   },
   actions: {
     login(email, password) {
       return authService.login(email, password).then((response) => {
         if (response.success === true) {
           this.authState = "logged";
+          this.user = response.data.user;
         }
         return response;
       });
@@ -23,6 +26,7 @@ export const useAuthStore = defineStore("authStore", {
       return authService.register({email, password, name}).then((response) => {
         if (response.success === true) {
           this.authState = "logged";
+          this.user = response.data.user;
         }
         return response;
       });
