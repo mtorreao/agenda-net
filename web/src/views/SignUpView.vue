@@ -9,7 +9,7 @@ const router = useRouter();
 async function submit({ email, password, name }) {
   const {success, data} = await authStore.register({email, name, password});
   if (success === true) {
-    router.push("/");
+    router.push("/contacts");
     return;
   } else {
     return data; // validation errors

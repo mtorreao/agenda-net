@@ -12,10 +12,6 @@ class AuthService {
     }).then((response) => response.json());
   };
 
-  constructor() {
-    this.authenticated = false;
-  }
-
   login(email, password) {
     return this._fetch(`${this._baseUrl}/auth/signin`, {
       method: "POST",
@@ -24,9 +20,8 @@ class AuthService {
         password: password,
       }),
     }).then((response) => {
-      if (response.success === true) {
+      if (response.success === true && response.data.accessToken) {
         this._setToken(response.data.accessToken);
-        this.authenticated = true;
       }
       return response;
     });
@@ -41,23 +36,15 @@ class AuthService {
         name: name,
       }),
     }).then((response) => {
-      if (response.success === true) {
+      if (response.success === true && response.data.accessToken) {
         this._setToken(response.data.accessToken);
-        this.authenticated = true;
       }
       return response;
     });
   }
 
   logout() {
-    this.authenticated = false;
     this._clearToken();
-  }
-
-  isAuthenticated() {
-    if (this._getToken()) this.authenticated = true;
-    else this.authenticated = false;
-    return this.authenticated;
   }
 
   _setToken(token) {
@@ -74,5 +61,5 @@ class AuthService {
 }
 
 export default {
-  instance: () => new AuthService(),
+  instance: new AuthService(),
 };

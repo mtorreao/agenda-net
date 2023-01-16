@@ -1,3 +1,5 @@
+import { useAuthStore } from "../stores/auth";
+
 class ContactService {
   _baseUrl = "http://localhost:5000/api/v1";
   _fetch = (url, options) => {
@@ -16,9 +18,11 @@ class ContactService {
   };
 
   _checkStatus(response) {
-    console.log(`ContactService -> checkStatus`, response);
     if (response.status >= 200 && response.status < 300) {
       return response;
+    } else if (response.status === 401) {
+      useAuthStore().logout();
+      return;
     } else {
       var error = new Error(response.statusText);
       error.response = response;
@@ -26,13 +30,44 @@ class ContactService {
     }
   }
 
+  _getToken() {
+    return localStorage.getItem("token");
+  }
+
   findAll() {
-    return this._fetch(`${this._baseUrl}/Contact`);
+    return this._fetch(`${this._baseUrl}/Contact`, {
+      method: "GET",
+    });
+  }
+
+  create({ name, email, phone }) {
+    return this._fetch(`${this._baseUrl}/Contact`, {
+      method: "POST",
+      body: JSON.stringify({ name, email, phone }),
+    });
+  }
+
+  update({ id, name, email, phone }) {
+    return this._fetch(`${this._baseUrl}/Contact`, {
+      method: "PATCH",
+      body: JSON.stringify({ id, name, email, phone }),
+    });
+  }
+
+  delete({ id }) {
+    return this._fetch(`${this._baseUrl}/Contact`, {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+    });
+  }
+
+  getById(id ) {
+    return this._fetch(`${this._baseUrl}/Contact/${id}`, {
+      method: "GET",
+    });
   }
 }
 
 export default {
-  install(app) {
-    app.config.globalProperties.$contactService = new ContactService();
-  }
-}
+  instance: new ContactService(),
+};

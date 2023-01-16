@@ -60,7 +60,7 @@ function clearError(key) {
 }
 
 function submit() {
-  if (passwordConfirmationHasError.value) {
+  if (props.type === 'register' && passwordConfirmationHasError.value) {
     return;
   }
   isLoading.value = true;

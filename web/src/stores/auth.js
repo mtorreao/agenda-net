@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import AuthService from "../services/auth-service";
 
-const authService = AuthService.instance();
+const authService = AuthService.instance;
 
 export const useAuthStore = defineStore("authStore", {
   state: () => ({
@@ -32,8 +32,9 @@ export const useAuthStore = defineStore("authStore", {
       this.authState = "not_logged";
     },
     checkLogin() {
-      const isAuthenticated = authService.isAuthenticated();
-      this.authState = isAuthenticated ? "logged" : "not_logged";
+      if (authService._getToken()) {
+        this.authState = "logged";
+      }
     },
   },
 });

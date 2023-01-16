@@ -1,26 +1,53 @@
 <script setup>
 import { inject, onMounted, ref, watch } from "vue";
+import { useContactStore } from '../stores/contact'
+
+const dialogRef = inject("contactFormDialogRef");
 const props = defineProps({
   contact: {
     type: Object,
     required: false,
-    default: { id: null, name: "", email: "", phone: "" },
+    default: { id: null, name: "", email: "", phone: ""},
   },
 });
 
+const contactStore = useContactStore()
 const isEdit = ref(props.contact.id ? true : false);
 const contact = ref(props.contact);
 
-function submit() {
-  console.log(`ContactForm -> submit ->`, contact.value);
+function resetForm() {
+  contact.value.id = null;
+  contact.value.name = '';
+  contact.value.email = '';
+  contact.value.phone = '';
 }
 
-onMounted(() => {
-  const dialogRef = inject("contactFormDialogRef");
+async function submit() {
+  try {
+    if (isEdit.value) {
+      await contactStore.update(contact.value);
+    } else {
+      await contactStore.create(contact.value);
+    }
+    resetForm();
+    dialogRef.value.close()
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+onMounted(async () => {  
   const dialogData = dialogRef?.value?.data;
 
+  resetForm();
+
   if (dialogData && dialogData.id) {
-    contact.value = dialogData;
+    const contactData = await contactStore.getById(dialogData.id)
+    contact.value.id = contactData.id;
+    contact.value.name = contactData.name;
+    contact.value.email = contactData.email;
+    contact.value.phone = contactData.phone;
+    isEdit.value = true;
   }
 });
 

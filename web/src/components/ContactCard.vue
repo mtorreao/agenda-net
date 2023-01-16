@@ -18,5 +18,15 @@ const props = defineProps({
       <strong>Telefone: </strong>
       <p>{{ props.contact.phone }}</p>
     </template>
+    <template #footer>
+      <Button
+        icon="pi pi-pencil"
+        class="p-button-rounded p-button-text"
+        @click="$emit('onEdit')" />
+      <Button
+        icon="pi pi-trash"
+        class="p-button-rounded p-button-text"
+        @click="$emit('onRemove')" />
+    </template>
   </Card>
 </template>
