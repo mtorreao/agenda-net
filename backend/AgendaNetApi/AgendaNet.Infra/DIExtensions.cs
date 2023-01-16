@@ -3,11 +3,13 @@ using System.Reflection;
 using AgendaNet.Domain.Commands;
 using AgendaNet.Domain.DTOs;
 using AgendaNet.Domain.Entities;
+using AgendaNet.Domain.Messages;
 using AgendaNet.Domain.Repositories;
 using AgendaNet.Domain.Services;
 using AgendaNet.Infra;
 using AgendaNet.Infra.Initializers;
 using AgendaNet.Infra.JWT;
+using AgendaNet.Infra.RabbitMq;
 using AgendaNet.Infra.Repositories;
 using AgendaNet.Infra.Services;
 using AutoMapper;
@@ -161,5 +163,13 @@ public static class DIExtensions
 
     return services;
   }
+
+  public static IServiceCollection AddRabbitMq(this IServiceCollection services)
+  {
+    services.AddSingleton<IMessageProducer, MessageProducer>();
+
+    return services;
+  }
+  
 }
 

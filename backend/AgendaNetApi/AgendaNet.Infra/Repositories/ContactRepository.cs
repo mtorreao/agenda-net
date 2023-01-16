@@ -32,11 +32,12 @@ namespace AgendaNet.Infra.Repositories
       return _context.Contacts.Where(c => c.UserId == guidUserId).ToList();
     }
 
-    public Contact? GetById(Guid id, string? userId)
+    public Contact? GetById(string id, string? userId)
     {
+      var guidId = Guid.Parse(id);
       if (userId == null)
-        return _context.Contacts.FirstOrDefault(x => x.Id == id);
-      return _context.Contacts.FirstOrDefault(x => x.Id == id && x.UserId == Guid.Parse(userId));
+        return _context.Contacts.FirstOrDefault(x => x.Id == guidId);
+      return _context.Contacts.FirstOrDefault(x => x.Id == guidId && x.UserId == Guid.Parse(userId));
     }
 
     public void Update(Contact entity)

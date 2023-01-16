@@ -24,6 +24,7 @@ builder.Services.AddServices();
 builder.Services.AddAutoMapper();
 builder.Services.AddAgendaNetDB(connectionsConfigurations.AgendaNetDB!);
 builder.Services.AddIdentityDb(connectionsConfigurations.IdentityDB!);
+builder.Services.AddRabbitMq();
 builder.Services.AddJwtSecurity(tokenConfigurations);
 builder.Services.AddCors();
 

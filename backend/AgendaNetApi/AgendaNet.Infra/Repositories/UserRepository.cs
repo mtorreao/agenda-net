@@ -27,14 +27,14 @@ namespace AgendaNet.Infra.Repositories
       _context.DeleteAsync(_mapper.Map<AuthUser>(entity));
     }
 
-    public User GetByEmail(string email)
+    public User? GetByEmail(string email)
     {
       return _mapper.Map<AuthUser, User>(_context.FindByEmailAsync(email).Result);
     }
 
-    public User GetById(Guid id)
+    public User? GetById(string id)
     {
-      return _mapper.Map<User>(_context.FindByIdAsync(id.ToString()));
+      return _mapper.Map<User>(_context.FindByIdAsync(id).Result);
     }
 
     public void Update(User entity)

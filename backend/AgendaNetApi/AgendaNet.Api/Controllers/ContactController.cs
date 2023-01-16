@@ -48,7 +48,7 @@ public class ContactController : ControllerBase
   public ActionResult<ContactDTO> GetById([FromRoute] string id, [FromServices] IRepository repository, [FromServices] IMapper mapper)
   {
     var userId = User?.Identity?.Name;
-    var contact = mapper.Map<ContactDTO>(repository.Contacts.GetById(Guid.Parse(id), userId));
+    var contact = mapper.Map<ContactDTO>(repository.Contacts.GetById(id, userId));
     if (contact == null)
     {
       return new NotFoundResult();

@@ -1,5 +1,6 @@
 using AgendaNet.Domain.Commands;
 using AgendaNet.Domain.Entities;
+using AgendaNet.Domain.Messages;
 using AgendaNet.Domain.Repositories;
 
 namespace AgendaNet.Domain.Handlers
@@ -7,10 +8,12 @@ namespace AgendaNet.Domain.Handlers
   public class ContactHandler : IHandler<CreateContactCommand>, IHandler<DeleteContactCommand>, IHandler<UpdateContactCommand>
   {
     private readonly IRepository _repository;
+    private readonly IMessageProducer _messageProducer;
 
-    public ContactHandler(IRepository repository)
+    public ContactHandler(IRepository repository, IMessageProducer messageProducer)
     {
       _repository = repository;
+      _messageProducer = messageProducer;
     }
 
     public ICommandResult Handle(CreateContactCommand command)
@@ -22,7 +25,16 @@ namespace AgendaNet.Domain.Handlers
       }
 
       var contact = new Contact(command.Name!, command.Email!, command.Phone!, DateTime.UtcNow, Guid.Parse(command.UserId!));
-      _repository.Contacts.Create(contact);
+
+      // Send message to queue
+      this._messageProducer.Publish<CreateContactMessage>(
+        new CreateContactMessage()
+        {
+          Name = contact.Name,
+          Email = contact.Email,
+          Phone = contact.Phone,
+          UserId = contact.UserId.ToString()
+        });
 
       return new GenericCommandResult(true, "Contact created", contact);
     }
