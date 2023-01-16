@@ -30,6 +30,13 @@ public class AuthHandler : Notifiable<Notification>, IHandler<SignUpCommand>, IH
       return new GenericCommandResult(false, "Dados inválidos", command.Notifications);
     }
 
+    var emailIsTaken = _repository.Users.GetByEmail(command.Email!);
+    if (emailIsTaken != null)
+    {
+      AddNotification("Email", "Email já está em uso");
+      return new GenericCommandResult(false, "Email já está em uso", command.Notifications);
+    }
+
     _repository.Users.Create(_mapper.Map<User>(command));
 
     // Clear password for security reasons

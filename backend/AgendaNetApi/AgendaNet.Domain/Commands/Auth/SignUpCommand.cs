@@ -26,6 +26,7 @@ public class SignUpCommand : Notifiable<Notification>, ICommand
       new Contract<Notification>()
         .Requires()
         .IsNotNullOrEmpty(Name, "Name", "Nome é obrigatório")
+        .IsNotNullOrEmpty(Email, "Email", "Email é obrigatório")
         .IsEmailOrEmpty(Email, "Email", "Email inválido")
         .IsNotNullOrEmpty(Password, "Password", "Senha é obrigatória")
         .IsGreaterOrEqualsThan(Password, 8, "Password", "Senha deve ter no mínimo 8 caracteres")
